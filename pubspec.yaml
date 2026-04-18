@@ -1,0 +1,43 @@
+name: graamashaale
+description: An offline-first educational app for rural high school students.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State management
+  flutter_riverpod: ^2.5.1
+  
+  # Local database
+  sqflite: ^2.3.2
+  path: ^1.9.0
+  
+  # Lightweight key-value store
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # Connectivity
+  connectivity_plus: ^6.0.3
+  
+  # Navigation
+  go_router: ^13.2.0
+  
+  # UI
+  google_fonts: ^6.2.1
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/content/
