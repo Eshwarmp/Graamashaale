@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import 'lessons_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../../../features/progress/screens/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,6 +14,44 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('GraamaShaale'),
         centerTitle: false,
+        actions: [
+          FutureBuilder(
+            future: Hive.openBox('settings'),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const SizedBox();
+              final box = snapshot.data as Box;
+              final name = box.get('student_name', defaultValue: 'U');
+              final initials = name.trim().isNotEmpty
+                  ? name.trim()[0].toUpperCase()
+                  : 'U';
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                ),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 16),
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      initials,
+                      style: TextStyle(
+                        color: AppTheme.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
