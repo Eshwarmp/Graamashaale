@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_theme.dart';
-import '../features/lessons/screens/home_screen.dart';
+import '../features/lessons/screens/splash_screen.dart';
 
 class GraamaShaaleApp extends StatelessWidget {
   const GraamaShaaleApp({super.key});
@@ -11,7 +11,7 @@ class GraamaShaaleApp extends StatelessWidget {
       title: 'GraamaShaale',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
