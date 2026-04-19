@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/database/database_repository.dart';
 import '../../../core/database/lesson_model.dart';
 import '../../../core/database/question_model.dart';
@@ -23,16 +24,21 @@ class _QuizScreenState extends State<QuizScreen> {
   String? _selectedOption;
   bool _answered = false;
   int _score = 0;
+  String _medium = 'english';
 
   @override
   void initState() {
     super.initState();
-    _loadQuestions();
+    _loadData();
   }
 
-  Future<void> _loadQuestions() async {
-    final questions = await _repo.getQuestionsByLesson(widget.lesson.id!);
+  Future<void> _loadData() async {
+    final box = await Hive.openBox('settings');
+    final medium = box.get('medium', defaultValue: 'english');
+    final questions =
+        await _repo.getQuestionsByLesson(widget.lesson.id!);
     setState(() {
+      _medium = medium;
       _questions = questions;
       _isLoading = false;
     });
@@ -57,14 +63,12 @@ class _QuizScreenState extends State<QuizScreen> {
         _answered = false;
       });
     } else {
-      // Save progress
       await _repo.saveProgress(Progress(
         lessonId: widget.lesson.id!,
         score: _score,
         total: _questions.length,
         attemptedAt: DateTime.now().toIso8601String(),
       ));
-
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -107,13 +111,32 @@ class _QuizScreenState extends State<QuizScreen> {
     if (_questions.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: Text(widget.lesson.title)),
-        body: const Center(
-          child: Text('No questions available for this lesson yet!'),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('📝', style: TextStyle(fontSize: 60)),
+              const SizedBox(height: 16),
+              Text(
+                'No questions yet!',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Questions will be added soon.',
+                style: TextStyle(color: AppTheme.textMuted),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     final question = _questions[_currentIndex];
+    final questionText = _medium == 'kannada'
+        ? question.questionKannada
+        : question.questionEnglish;
+
     final options = {
       'A': question.optionA,
       'B': question.optionB,
@@ -124,26 +147,58 @@ class _QuizScreenState extends State<QuizScreen> {
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: Text('Quiz — ${widget.lesson.title}'),
+        title: Text('Quiz — Part ${widget.lesson.part}'),
+        actions: [
+          // Language toggle
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _medium =
+                    _medium == 'english' ? 'kannada' : 'english';
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                _medium == 'english' ? 'ಕನ್ನಡ' : 'English',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Progress indicator
+            // Progress row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Question ${_currentIndex + 1} of ${_questions.length}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppTheme.textMuted,
-                      ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: AppTheme.textMuted),
                 ),
                 Text(
                   'Score: $_score',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(
                         color: AppTheme.primary,
                         fontWeight: FontWeight.w700,
                       ),
@@ -154,10 +209,11 @@ class _QuizScreenState extends State<QuizScreen> {
             LinearProgressIndicator(
               value: (_currentIndex + 1) / _questions.length,
               backgroundColor: Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(AppTheme.primary),
               borderRadius: BorderRadius.circular(4),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
 
             // Question
             Container(
@@ -168,22 +224,40 @@ class _QuizScreenState extends State<QuizScreen> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
+                    color: Colors.black.withValues(alpha: 0.06),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              child: Text(
-                question.question,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.textDark,
-                      height: 1.5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Both languages shown
+                  Text(
+                    question.questionEnglish,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textDark,
+                          height: 1.5,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    question.questionKannada,
+                    style: TextStyle(
+                      color: AppTheme.textMuted,
+                      fontSize: 14,
+                      height: 1.4,
                     ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
             // Options
             ...options.entries.map((entry) {
@@ -202,7 +276,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
+                        color: Colors.black.withValues(alpha: 0.04),
                         blurRadius: 4,
                         offset: const Offset(0, 1),
                       ),
@@ -214,7 +288,8 @@ class _QuizScreenState extends State<QuizScreen> {
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
-                          color: AppTheme.primary.withOpacity(0.1),
+                          color:
+                              AppTheme.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
@@ -231,12 +306,23 @@ class _QuizScreenState extends State<QuizScreen> {
                       Expanded(
                         child: Text(
                           entry.value,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppTheme.textDark,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: AppTheme.textDark),
                         ),
                       ),
+                      if (_answered &&
+                          entry.key ==
+                              _questions[_currentIndex].correctOption)
+                        const Icon(Icons.check_circle,
+                            color: Colors.green, size: 20),
+                      if (_answered &&
+                          entry.key == _selectedOption &&
+                          entry.key !=
+                              _questions[_currentIndex].correctOption)
+                        const Icon(Icons.cancel,
+                            color: Colors.red, size: 20),
                     ],
                   ),
                 ),
@@ -253,8 +339,8 @@ class _QuizScreenState extends State<QuizScreen> {
                   onPressed: _nextQuestion,
                   child: Text(
                     _currentIndex < _questions.length - 1
-                        ? 'Next Question'
-                        : 'See Results',
+                        ? 'Next Question →'
+                        : 'See Results 🎯',
                   ),
                 ),
               ),

@@ -15,8 +15,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'graamashaale.db');
-
+    final path = join(dbPath, 'graamashaale_v4.db');
     return await openDatabase(
       path,
       version: 1,
@@ -25,24 +24,24 @@ class DatabaseHelper {
   }
 
   Future<void> _createTables(Database db, int version) async {
-    // Lessons table
     await db.execute('''
       CREATE TABLE lessons (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         subject TEXT NOT NULL,
-        chapter_number INTEGER NOT NULL,
+        part INTEGER NOT NULL,
         title TEXT NOT NULL,
-        content TEXT NOT NULL,
+        pdf_path TEXT NOT NULL,
+        class_level INTEGER NOT NULL,
         is_completed INTEGER DEFAULT 0
       )
     ''');
 
-    // Questions table
     await db.execute('''
       CREATE TABLE questions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         lesson_id INTEGER NOT NULL,
-        question TEXT NOT NULL,
+        question_english TEXT NOT NULL,
+        question_kannada TEXT NOT NULL,
         option_a TEXT NOT NULL,
         option_b TEXT NOT NULL,
         option_c TEXT NOT NULL,
@@ -52,7 +51,6 @@ class DatabaseHelper {
       )
     ''');
 
-    // Progress table
     await db.execute('''
       CREATE TABLE progress (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +62,6 @@ class DatabaseHelper {
       )
     ''');
 
-    // Doubts table
     await db.execute('''
       CREATE TABLE doubts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -75,120 +72,107 @@ class DatabaseHelper {
       )
     ''');
 
-    // Insert dummy data
-    await _insertDummyData(db);
+    await _insertLessons(db);
+    await _insertQuestions(db);
   }
 
-  Future<void> _insertDummyData(Database db) async {
-    // Mathematics - Chapter 1
-    await db.insert('lessons', {
-      'subject': 'Mathematics',
-      'chapter_number': 1,
-      'title': 'Real Numbers',
-      'content': '''Real numbers include all rational and irrational numbers.
+  Future<void> _insertLessons(Database db) async {
+    final subjects = [
+      // CLASS 8
+      // Core
+      {'subject': 'Mathematics', 'part': 1, 'title': 'Mathematics Part 1', 'pdf_path': 'assets/content/class8/core/maths1.pdf', 'class_level': 8},
+      {'subject': 'Mathematics', 'part': 2, 'title': 'Mathematics Part 2', 'pdf_path': 'assets/content/class8/core/maths2.pdf', 'class_level': 8},
+      {'subject': 'Science', 'part': 1, 'title': 'Science Part 1', 'pdf_path': 'assets/content/class8/core/science1.pdf', 'class_level': 8},
+      {'subject': 'Science', 'part': 2, 'title': 'Science Part 2', 'pdf_path': 'assets/content/class8/core/science2.pdf', 'class_level': 8},
+      {'subject': 'Social Studies', 'part': 1, 'title': 'Social Studies Part 1', 'pdf_path': 'assets/content/class8/core/social1.pdf', 'class_level': 8},
+      {'subject': 'Social Studies', 'part': 2, 'title': 'Social Studies Part 2', 'pdf_path': 'assets/content/class8/core/social2.pdf', 'class_level': 8},
+      // Languages
+      {'subject': 'English', 'part': 1, 'title': 'English Part 1', 'pdf_path': 'assets/content/class8/languages/english1.pdf', 'class_level': 8},
+      {'subject': 'English', 'part': 2, 'title': 'English Part 2', 'pdf_path': 'assets/content/class8/languages/english2.pdf', 'class_level': 8},
+      {'subject': 'Kannada', 'part': 1, 'title': 'Kannada Part 1', 'pdf_path': 'assets/content/class8/languages/kannada1.pdf', 'class_level': 8},
+      {'subject': 'Kannada', 'part': 2, 'title': 'Kannada Part 2', 'pdf_path': 'assets/content/class8/languages/kannada2.pdf', 'class_level': 8},
+      {'subject': 'Hindi', 'part': 1, 'title': 'Hindi Part 1', 'pdf_path': 'assets/content/class8/languages/hindi1.pdf', 'class_level': 8},
+      {'subject': 'Hindi', 'part': 2, 'title': 'Hindi Part 2', 'pdf_path': 'assets/content/class8/languages/hindi2.pdf', 'class_level': 8},
 
-Key Concepts:
-1. Euclid\'s Division Lemma: For any two positive integers a and b, there exist unique integers q and r such that a = bq + r, where 0 ≤ r < b.
+      // CLASS 9
+      {'subject': 'Mathematics', 'part': 1, 'title': 'Mathematics Part 1', 'pdf_path': 'assets/content/class9/core/maths1.pdf', 'class_level': 9},
+      {'subject': 'Mathematics', 'part': 2, 'title': 'Mathematics Part 2', 'pdf_path': 'assets/content/class9/core/maths2.pdf', 'class_level': 9},
+      {'subject': 'Science', 'part': 1, 'title': 'Science Part 1', 'pdf_path': 'assets/content/class9/core/science1.pdf', 'class_level': 9},
+      {'subject': 'Science', 'part': 2, 'title': 'Science Part 2', 'pdf_path': 'assets/content/class9/core/science2.pdf', 'class_level': 9},
+      {'subject': 'Social Studies', 'part': 1, 'title': 'Social Studies Part 1', 'pdf_path': 'assets/content/class9/core/social1.pdf', 'class_level': 9},
+      {'subject': 'Social Studies', 'part': 2, 'title': 'Social Studies Part 2', 'pdf_path': 'assets/content/class9/core/social2.pdf', 'class_level': 9},
+      {'subject': 'English', 'part': 1, 'title': 'English Part 1', 'pdf_path': 'assets/content/class9/languages/english1.pdf', 'class_level': 9},
+      {'subject': 'English', 'part': 2, 'title': 'English Part 2', 'pdf_path': 'assets/content/class9/languages/english2.pdf', 'class_level': 9},
+      {'subject': 'Kannada', 'part': 1, 'title': 'Kannada Part 1', 'pdf_path': 'assets/content/class9/languages/kannada1.pdf', 'class_level': 9},
+      {'subject': 'Kannada', 'part': 2, 'title': 'Kannada Part 2', 'pdf_path': 'assets/content/class9/languages/kannada2.pdf', 'class_level': 9},
+      {'subject': 'Hindi', 'part': 1, 'title': 'Hindi Part 1', 'pdf_path': 'assets/content/class9/languages/hindi1.pdf', 'class_level': 9},
+      {'subject': 'Hindi', 'part': 2, 'title': 'Hindi Part 2', 'pdf_path': 'assets/content/class9/languages/hindi2.pdf', 'class_level': 9},
 
-2. Fundamental Theorem of Arithmetic: Every composite number can be expressed as a product of primes in a unique way.
+      // CLASS 10
+      {'subject': 'Mathematics', 'part': 1, 'title': 'Mathematics Part 1', 'pdf_path': 'assets/content/class10/core/maths1.pdf', 'class_level': 10},
+      {'subject': 'Mathematics', 'part': 2, 'title': 'Mathematics Part 2', 'pdf_path': 'assets/content/class10/core/maths2.pdf', 'class_level': 10},
+      {'subject': 'Science', 'part': 1, 'title': 'Science Part 1', 'pdf_path': 'assets/content/class10/core/science1.pdf', 'class_level': 10},
+      {'subject': 'Science', 'part': 2, 'title': 'Science Part 2', 'pdf_path': 'assets/content/class10/core/science2.pdf', 'class_level': 10},
+      {'subject': 'Social Studies', 'part': 1, 'title': 'Social Studies Part 1', 'pdf_path': 'assets/content/class10/core/social1.pdf', 'class_level': 10},
+      {'subject': 'Social Studies', 'part': 2, 'title': 'Social Studies Part 2', 'pdf_path': 'assets/content/class10/core/social2.pdf', 'class_level': 10},
+      {'subject': 'English', 'part': 1, 'title': 'English Part 1', 'pdf_path': 'assets/content/class10/languages/english1.pdf', 'class_level': 10},
+      {'subject': 'English', 'part': 2, 'title': 'English Part 2', 'pdf_path': 'assets/content/class10/languages/english2.pdf', 'class_level': 10},
+      {'subject': 'Kannada', 'part': 1, 'title': 'Kannada Part 1', 'pdf_path': 'assets/content/class10/languages/kannada1.pdf', 'class_level': 10},
+      {'subject': 'Kannada', 'part': 2, 'title': 'Kannada Part 2', 'pdf_path': 'assets/content/class10/languages/kannada2.pdf', 'class_level': 10},
+      {'subject': 'Hindi', 'part': 1, 'title': 'Hindi Part 1', 'pdf_path': 'assets/content/class10/languages/hindi1.pdf', 'class_level': 10},
+      {'subject': 'Hindi', 'part': 2, 'title': 'Hindi Part 2', 'pdf_path': 'assets/content/class10/languages/hindi2.pdf', 'class_level': 10},
+    ];
 
-3. Rational Numbers: Numbers that can be expressed as p/q where q ≠ 0. Their decimal expansion is either terminating or non-terminating repeating.
+    for (final s in subjects) {
+      await db.insert('lessons', {
+        'subject': s['subject'],
+        'part': s['part'],
+        'title': s['title'],
+        'pdf_path': s['pdf_path'],
+        'class_level': s['class_level'],
+        'is_completed': 0,
+      });
+    }
+  }
 
-4. Irrational Numbers: Numbers whose decimal expansion is non-terminating and non-repeating. Examples: √2, √3, π.
+  Future<void> _insertQuestions(Database db) async {
+    // Mathematics Class 8
+    await _addQ(db, 1, 'What is a rational number?', 'ಭಾಗಲಬ್ಧ ಸಂಖ್ಯೆ ಎಂದರೇನು?', 'p/q where q≠0', 'p+q', 'p×q', 'p-q', 'A');
+    await _addQ(db, 1, 'Which property: a+b = b+a?', 'a+b = b+a ಯಾವ ಗುಣ?', 'Associative', 'Commutative', 'Distributive', 'Closure', 'B');
 
-Example:
-Find HCF of 96 and 404 using Euclid\'s Division Lemma.
-404 = 96 × 4 + 20
-96 = 20 × 4 + 16
-20 = 16 × 1 + 4
-16 = 4 × 4 + 0
-Therefore, HCF = 4''',
-    });
+    // Science Class 8
+    await _addQ(db, 3, 'Kharif crops are grown in?', 'ಖಾರಿಫ್ ಬೆಳೆ ಯಾವ ಋತುವಿನಲ್ಲಿ?', 'Oct-Mar', 'June-Sep', 'Mar-June', 'Dec-Feb', 'B');
+    await _addQ(db, 3, 'Which fixes nitrogen in soil?', 'ಮಣ್ಣಿನಲ್ಲಿ ಸಾರಜನಕ ಸ್ಥಿರೀಕರಿಸುವ ಬ್ಯಾಕ್ಟೀರಿಯಾ?', 'Lactobacillus', 'Rhizobium', 'Penicillium', 'Yeast', 'B');
 
-    // Mathematics - Chapter 2
-    await db.insert('lessons', {
-      'subject': 'Mathematics',
-      'chapter_number': 2,
-      'title': 'Polynomials',
-      'content': '''A polynomial is an algebraic expression with variables and coefficients.
+    // Mathematics Class 9
+    await _addQ(db, 13, 'Which is irrational?', 'ಅಭಾಗಲಬ್ಧ ಸಂಖ್ಯೆ ಯಾವುದು?', '√4', '√9', '√2', '0.5', 'C');
+    await _addQ(db, 13, 'a⁰ = ?', 'a⁰ = ?', '0', 'a', '1', 'Undefined', 'C');
 
-Key Concepts:
-1. Degree of a Polynomial: The highest power of the variable.
-   - Linear: degree 1 (ax + b)
-   - Quadratic: degree 2 (ax² + bx + c)
-   - Cubic: degree 3 (ax³ + bx² + cx + d)
+    // Science Class 9
+    await _addQ(db, 15, 'Boiling point of water?', 'ನೀರಿನ ಕುದಿಯುವ ಬಿಂದು?', '0°C', '50°C', '100°C', '200°C', 'C');
+    await _addQ(db, 15, 'Sublimation example?', 'ಉತ್ಪತನಕ್ಕೆ ಉದಾಹರಣೆ?', 'Ice', 'Water', 'Camphor', 'Salt', 'C');
 
-2. Zeroes of a Polynomial: Values of x for which p(x) = 0.
+    // Mathematics Class 10
+    await _addQ(db, 25, 'Euclid\'s Lemma: a =', 'ಯೂಕ್ಲಿಡ್ ಲೆಮ್ಮಾ: a =', 'bq+r, 0≤r<b', 'bq-r', 'bq+r, r>b', 'bq×r', 'A');
+    await _addQ(db, 25, 'HCF × LCM =', 'ಮ.ಸಾ.ಅ × ಲ.ಸಾ.ಅ =', 'Sum', 'Difference', 'Product', 'Square', 'C');
 
-3. For a quadratic polynomial ax² + bx + c:
-   - Sum of zeroes = -b/a
-   - Product of zeroes = c/a
+    // Science Class 10
+    await _addQ(db, 27, 'Combination reaction:', 'ಸಂಯೋಜನ ಕ್ರಿಯೆ:', 'AB→A+B', 'A+B→AB', 'A+BC→AC+B', 'AB+CD→AD+CB', 'B');
+    await _addQ(db, 27, 'Oxidation =', 'ಆಕ್ಸಿಡೀಕರಣ =', 'Gain electrons', 'Loss electrons', 'Gain protons', 'Loss neutrons', 'B');
+  }
 
-Example:
-Find zeroes of x² - 3x - 4
-x² - 3x - 4 = (x-4)(x+1)
-Zeroes are x = 4 and x = -1''',
-    });
-
-    // Science - Chapter 1
-    await db.insert('lessons', {
-      'subject': 'Science',
-      'chapter_number': 1,
-      'title': 'Chemical Reactions',
-      'content': '''A chemical reaction is a process where substances are transformed into new substances.
-
-Key Concepts:
-1. Signs of a Chemical Reaction:
-   - Change in color
-   - Evolution of gas
-   - Formation of precipitate
-   - Change in temperature
-
-2. Types of Chemical Reactions:
-   - Combination: A + B → AB
-   - Decomposition: AB → A + B
-   - Displacement: A + BC → AC + B
-   - Double Displacement: AB + CD → AD + CB
-   - Redox: Involves oxidation and reduction
-
-3. Balancing Chemical Equations:
-   - Law of Conservation of Mass must be followed
-   - Same number of atoms on both sides
-
-Example:
-Mg + O₂ → MgO (unbalanced)
-2Mg + O₂ → 2MgO (balanced)''',
-    });
-
-    // Insert MCQ questions for lesson 1
+  Future<void> _addQ(Database db, int lessonId,
+      String qEn, String qKn,
+      String a, String b, String c, String d, String correct) async {
     await db.insert('questions', {
-      'lesson_id': 1,
-      'question': 'What does Euclid\'s Division Lemma state?',
-      'option_a': 'a = bq + r where 0 ≤ r < b',
-      'option_b': 'a = bq + r where 0 ≤ r > b',
-      'option_c': 'a = bq - r where 0 ≤ r < b',
-      'option_d': 'a = bq + r where r > b',
-      'correct_option': 'A',
-    });
-
-    await db.insert('questions', {
-      'lesson_id': 1,
-      'question': 'Which of these is an irrational number?',
-      'option_a': '0.5',
-      'option_b': '√4',
-      'option_c': '√2',
-      'option_d': '3/4',
-      'correct_option': 'C',
-    });
-
-    await db.insert('questions', {
-      'lesson_id': 2,
-      'question': 'What is the degree of polynomial 3x² + 2x + 1?',
-      'option_a': '1',
-      'option_b': '2',
-      'option_c': '3',
-      'option_d': '0',
-      'correct_option': 'B',
+      'lesson_id': lessonId,
+      'question_english': qEn,
+      'question_kannada': qKn,
+      'option_a': a,
+      'option_b': b,
+      'option_c': c,
+      'option_d': d,
+      'correct_option': correct,
     });
   }
 }

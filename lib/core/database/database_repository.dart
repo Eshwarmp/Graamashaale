@@ -9,14 +9,15 @@ class DatabaseRepository {
 
   // ─── LESSONS ───────────────────────────────────────────
 
-  // Get all lessons for a subject
-  Future<List<Lesson>> getLessonsBySubject(String subject) async {
+  // Get lessons by subject and class level
+  Future<List<Lesson>> getLessonsBySubject(
+      String subject, int classLevel) async {
     final db = await _dbHelper.database;
     final maps = await db.query(
       'lessons',
-      where: 'subject = ?',
-      whereArgs: [subject],
-      orderBy: 'chapter_number ASC',
+      where: 'subject = ? AND class_level = ?',
+      whereArgs: [subject, classLevel],
+      orderBy: 'part ASC',
     );
     return maps.map((map) => Lesson.fromMap(map)).toList();
   }
@@ -51,6 +52,17 @@ class DatabaseRepository {
       'lessons',
       where: 'subject = ? AND is_completed = 1',
       whereArgs: [subject],
+    );
+    return result.length;
+  }
+
+  // Get total lessons count for a subject and class
+  Future<int> getTotalCount(String subject, int classLevel) async {
+    final db = await _dbHelper.database;
+    final result = await db.query(
+      'lessons',
+      where: 'subject = ? AND class_level = ?',
+      whereArgs: [subject, classLevel],
     );
     return result.length;
   }
@@ -96,6 +108,20 @@ class DatabaseRepository {
       orderBy: 'attempted_at DESC',
     );
     return maps.map((map) => Progress.fromMap(map)).toList();
+  }
+
+  // Get best score for a lesson
+  Future<Progress?> getBestScore(int lessonId) async {
+    final db = await _dbHelper.database;
+    final maps = await db.query(
+      'progress',
+      where: 'lesson_id = ?',
+      whereArgs: [lessonId],
+      orderBy: 'score DESC',
+      limit: 1,
+    );
+    if (maps.isEmpty) return null;
+    return Progress.fromMap(maps.first);
   }
 
   // ─── DOUBTS ────────────────────────────────────────────

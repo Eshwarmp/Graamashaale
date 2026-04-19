@@ -13,7 +13,6 @@ class Doubt {
     required this.createdAt,
   });
 
-  // Convert database row to Doubt object
   factory Doubt.fromMap(Map<String, dynamic> map) {
     return Doubt(
       id: map['id'],
@@ -24,7 +23,6 @@ class Doubt {
     );
   }
 
-  // Convert Doubt object to database row
   Map<String, dynamic> toMap() {
     return {
       'id': id,

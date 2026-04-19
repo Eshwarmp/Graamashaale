@@ -13,7 +13,6 @@ class Progress {
     required this.attemptedAt,
   });
 
-  // Convert database row to Progress object
   factory Progress.fromMap(Map<String, dynamic> map) {
     return Progress(
       id: map['id'],
@@ -24,7 +23,6 @@ class Progress {
     );
   }
 
-  // Convert Progress object to database row
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -35,14 +33,19 @@ class Progress {
     };
   }
 
-  // Get percentage score
   double get percentage => total == 0 ? 0 : (score / total) * 100;
 
-  // Get result label
   String get resultLabel {
-    if (percentage >= 80) return 'Excellent!';
-    if (percentage >= 60) return 'Good!';
-    if (percentage >= 40) return 'Keep Practicing!';
-    return 'Needs Improvement';
+    if (percentage >= 80) return 'Excellent! 🎉';
+    if (percentage >= 60) return 'Good Job! 👍';
+    if (percentage >= 40) return 'Keep Practicing! 💪';
+    return 'Needs Improvement 📚';
+  }
+
+  String get resultColor {
+    if (percentage >= 80) return 'green';
+    if (percentage >= 60) return 'blue';
+    if (percentage >= 40) return 'amber';
+    return 'red';
   }
 }

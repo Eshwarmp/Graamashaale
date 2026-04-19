@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/database/database_repository.dart';
 import '../../../core/database/lesson_model.dart';
 import '../../../core/theme/app_theme.dart';
-import 'lesson_detail_screen.dart';
+import 'pdf_viewer_screen.dart';
 
 class LessonsScreen extends StatefulWidget {
   final String subject;
   final Color color;
+  final String icon;
 
   const LessonsScreen({
     super.key,
     required this.subject,
     required this.color,
+    required this.icon,
   });
 
   @override
@@ -22,6 +25,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
   final DatabaseRepository _repo = DatabaseRepository();
   List<Lesson> _lessons = [];
   bool _isLoading = true;
+  int _classLevel = 9;
 
   @override
   void initState() {
@@ -30,9 +34,14 @@ class _LessonsScreenState extends State<LessonsScreen> {
   }
 
   Future<void> _loadLessons() async {
-    final lessons = await _repo.getLessonsBySubject(widget.subject);
+    final box = await Hive.openBox('settings');
+    final classStr = box.get('student_class', defaultValue: '9');
+    final classLevel = int.tryParse(classStr.toString()) ?? 9;
+    final lessons =
+        await _repo.getLessonsBySubject(widget.subject, classLevel);
     setState(() {
       _lessons = lessons;
+      _classLevel = classLevel;
       _isLoading = false;
     });
   }
@@ -51,36 +60,82 @@ class _LessonsScreenState extends State<LessonsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('📚', style: TextStyle(fontSize: 60)),
+                      Text(widget.icon,
+                          style: const TextStyle(fontSize: 60)),
                       const SizedBox(height: 16),
                       Text(
-                        'No lessons yet!',
+                        'No content available!',
                         style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Class $_classLevel — ${widget.subject}',
+                        style: TextStyle(color: AppTheme.textMuted),
                       ),
                     ],
                   ),
                 )
-              : ListView.builder(
-                  padding: const EdgeInsets.all(20),
-                  itemCount: _lessons.length,
-                  itemBuilder: (context, index) {
-                    final lesson = _lessons[index];
-                    return _LessonCard(
-                      lesson: lesson,
-                      color: widget.color,
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => LessonDetailScreen(
-                              lesson: lesson,
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Class badge
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: widget.color,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              'Class $_classLevel • KSEEB',
+                              style: TextStyle(
+                                color: AppTheme.textDark,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                              ),
                             ),
                           ),
-                        );
-                        _loadLessons();
-                      },
-                    );
-                  },
+                          const SizedBox(width: 8),
+                          Text(
+                            '${_lessons.length} textbooks',
+                            style: TextStyle(
+                              color: AppTheme.textMuted,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(20),
+                        itemCount: _lessons.length,
+                        itemBuilder: (context, index) {
+                          final lesson = _lessons[index];
+                          return _LessonCard(
+                            lesson: lesson,
+                            color: widget.color,
+                            icon: widget.icon,
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => PdfViewerScreen(
+                                    lesson: lesson,
+                                  ),
+                                ),
+                              );
+                              _loadLessons();
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
     );
   }
@@ -89,11 +144,13 @@ class _LessonsScreenState extends State<LessonsScreen> {
 class _LessonCard extends StatelessWidget {
   final Lesson lesson;
   final Color color;
+  final String icon;
   final VoidCallback onTap;
 
   const _LessonCard({
     required this.lesson,
     required this.color,
+    required this.icon,
     required this.onTap,
   });
 
@@ -109,7 +166,7 @@ class _LessonCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -117,20 +174,18 @@ class _LessonCard extends StatelessWidget {
         ),
         child: Row(
           children: [
+            // Icon box
             Container(
-              width: 48,
-              height: 48,
+              width: 56,
+              height: 56,
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
                 child: Text(
-                  '${lesson.chapterNumber}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  icon,
+                  style: const TextStyle(fontSize: 28),
                 ),
               ),
             ),
@@ -140,7 +195,7 @@ class _LessonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Chapter ${lesson.chapterNumber}',
+                    'Part ${lesson.part}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppTheme.textMuted,
                         ),
@@ -148,19 +203,41 @@ class _LessonCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     lesson.title,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppTheme.textDark,
+                    style:
+                        Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.textDark,
+                            ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.picture_as_pdf,
+                        size: 14,
+                        color: AppTheme.textMuted,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'KSEEB Textbook',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.textMuted,
                         ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
+            // Status icon
             Icon(
               lesson.isCompleted
                   ? Icons.check_circle
                   : Icons.arrow_forward_ios,
-              color: lesson.isCompleted ? AppTheme.primary : AppTheme.textMuted,
+              color: lesson.isCompleted
+                  ? AppTheme.primary
+                  : AppTheme.textMuted,
               size: lesson.isCompleted ? 24 : 16,
             ),
           ],

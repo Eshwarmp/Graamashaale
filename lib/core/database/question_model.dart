@@ -1,7 +1,8 @@
 class Question {
   final int? id;
   final int lessonId;
-  final String question;
+  final String questionEnglish;
+  final String questionKannada;
   final String optionA;
   final String optionB;
   final String optionC;
@@ -11,7 +12,8 @@ class Question {
   Question({
     this.id,
     required this.lessonId,
-    required this.question,
+    required this.questionEnglish,
+    required this.questionKannada,
     required this.optionA,
     required this.optionB,
     required this.optionC,
@@ -19,12 +21,12 @@ class Question {
     required this.correctOption,
   });
 
-  // Convert database row to Question object
   factory Question.fromMap(Map<String, dynamic> map) {
     return Question(
       id: map['id'],
       lessonId: map['lesson_id'],
-      question: map['question'],
+      questionEnglish: map['question_english'],
+      questionKannada: map['question_kannada'],
       optionA: map['option_a'],
       optionB: map['option_b'],
       optionC: map['option_c'],
@@ -33,17 +35,22 @@ class Question {
     );
   }
 
-  // Convert Question object to database row
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'lesson_id': lessonId,
-      'question': question,
+      'question_english': questionEnglish,
+      'question_kannada': questionKannada,
       'option_a': optionA,
       'option_b': optionB,
       'option_c': optionC,
       'option_d': optionD,
       'correct_option': correctOption,
     };
+  }
+
+  // Get question based on medium
+  String getQuestion(String medium) {
+    return medium == 'kannada' ? questionKannada : questionEnglish;
   }
 }

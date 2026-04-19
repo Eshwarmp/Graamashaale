@@ -17,6 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _studentClass = '';
   String _role = '';
   String _studentId = '';
+  String _medium = '';
   int _completedLessons = 0;
   int _quizzesAttempted = 0;
 
@@ -28,19 +29,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadProfile() async {
     final box = await Hive.openBox('settings');
-    final name = box.get('student_name', defaultValue: 'User');
+    final name = box.get('student_name', defaultValue: 'Student');
     final studentClass = box.get('student_class', defaultValue: '-');
     final role = box.get('role', defaultValue: 'student');
+    final medium = box.get('medium', defaultValue: 'english');
     String studentId = box.get('student_id', defaultValue: '');
 
-    // Generate student ID if not exists
     if (studentId.isEmpty) {
-      studentId = 'STU${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}';
+      studentId =
+          'STU${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}';
       await box.put('student_id', studentId);
     }
 
-    // Get stats
-    final subjects = ['Mathematics', 'Science', 'Social Studies', 'English', 'Kannada'];
+    final subjects = [
+      'Mathematics',
+      'Science',
+      'Social Studies',
+      'English',
+      'Kannada',
+      'Hindi'
+    ];
     int completed = 0;
     for (final subject in subjects) {
       completed += await _repo.getCompletedCount(subject);
@@ -52,6 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _name = name;
       _studentClass = studentClass;
       _role = role;
+      _medium = medium;
       _studentId = studentId;
       _completedLessons = completed;
       _quizzesAttempted = allProgress.length;
@@ -63,16 +72,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (parts.length >= 2) {
       return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
     }
-    return _name.isNotEmpty ? _name[0].toUpperCase() : 'U';
+    return _name.isNotEmpty ? _name[0].toUpperCase() : 'S';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
+      appBar: AppBar(title: const Text('Profile / ಪ್ರೊಫೈಲ್')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -88,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.primary.withOpacity(0.3),
+                    color: AppTheme.primary.withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -115,27 +122,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: AppTheme.textDark,
                   ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
 
-            // Role badge
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: _role == 'teacher'
-                    ? const Color(0xFFFFF8E1)
-                    : const Color(0xFFE8F5E9),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                _role == 'teacher' ? '👩‍🏫 Teacher' : '🧑‍🎓 Student — Class $_studentClass',
-                style: TextStyle(
-                  color: _role == 'teacher'
-                      ? const Color(0xFFF9A825)
-                      : AppTheme.primary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13,
+            // Role + medium badges
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _role == 'teacher'
+                        ? const Color(0xFFFFF8E1)
+                        : const Color(0xFFE8F5E9),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    _role == 'teacher'
+                        ? '👩‍🏫 Teacher'
+                        : '🧑‍🎓 Class $_studentClass',
+                    style: TextStyle(
+                      color: _role == 'teacher'
+                          ? const Color(0xFFF9A825)
+                          : AppTheme.primary,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEDE7F6),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    _medium == 'kannada'
+                        ? '🔤 ಕನ್ನಡ ಮಾಧ್ಯಮ'
+                        : '📖 English Medium',
+                    style: const TextStyle(
+                      color: Color(0xFF6A1B9A),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 32),
 
@@ -148,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
+                    color: Colors.black.withValues(alpha: 0.06),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -164,14 +198,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Divider(height: 24),
                   _InfoRow(
                     icon: Icons.person,
-                    label: 'Name',
+                    label: 'Name / ಹೆಸರು',
                     value: _name,
                   ),
                   const Divider(height: 24),
                   _InfoRow(
                     icon: Icons.school,
-                    label: 'Class',
+                    label: 'Class / ತರಗತಿ',
                     value: 'Class $_studentClass — KSEEB',
+                  ),
+                  const Divider(height: 24),
+                  _InfoRow(
+                    icon: Icons.language,
+                    label: 'Medium / ಮಾಧ್ಯಮ',
+                    value: _medium == 'kannada'
+                        ? 'ಕನ್ನಡ ಮಾಧ್ಯಮ'
+                        : 'English Medium',
                   ),
                 ],
               ),
@@ -187,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
+                    color: Colors.black.withValues(alpha: 0.06),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -197,11 +239,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'My Progress',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppTheme.textDark,
-                        ),
+                    'My Progress / ನನ್ನ ಪ್ರಗತಿ',
+                    style:
+                        Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.textDark,
+                            ),
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -210,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: _StatBox(
                           icon: '📚',
                           value: '$_completedLessons',
-                          label: 'Lessons\nCompleted',
+                          label: 'Textbooks\nCompleted',
                           color: const Color(0xFFE8F5E9),
                         ),
                       ),
@@ -230,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 32),
 
-            // Logout button
+            // Logout
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
@@ -240,7 +283,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   if (context.mounted) {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                      MaterialPageRoute(
+                          builder: (_) => const LoginScreen()),
                       (route) => false,
                     );
                   }
@@ -286,10 +330,7 @@ class _InfoRow extends StatelessWidget {
         const SizedBox(width: 12),
         Text(
           label,
-          style: TextStyle(
-            color: AppTheme.textMuted,
-            fontSize: 13,
-          ),
+          style: TextStyle(color: AppTheme.textMuted, fontSize: 13),
         ),
         const Spacer(),
         Text(
@@ -341,10 +382,7 @@ class _StatBox extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12,
-              color: AppTheme.textMuted,
-            ),
+            style: TextStyle(fontSize: 12, color: AppTheme.textMuted),
           ),
         ],
       ),
