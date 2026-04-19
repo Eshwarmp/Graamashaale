@@ -11,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String? _selectedRole; // 'student' or 'teacher'
+  String? _selectedRole;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 40),
-
-              // Header
               Center(
                 child: Column(
                   children: [
@@ -33,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: AppTheme.primary.withOpacity(0.1),
+                        color: AppTheme.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Center(
@@ -61,8 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 60),
-
-              // Role selection
               Text(
                 'Select your role',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -71,8 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
               ),
               const SizedBox(height: 20),
-
-              // Student card
               _RoleCard(
                 icon: '🧑‍🎓',
                 title: 'ವಿದ್ಯಾರ್ಥಿ',
@@ -82,8 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 onTap: () => setState(() => _selectedRole = 'student'),
               ),
               const SizedBox(height: 16),
-
-              // Teacher card
               _RoleCard(
                 icon: '👩‍🏫',
                 title: 'ಶಿಕ್ಷಕರು',
@@ -92,10 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isSelected: _selectedRole == 'teacher',
                 onTap: () => setState(() => _selectedRole = 'teacher'),
               ),
-
               const Spacer(),
-
-              // Continue button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -104,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       : () async {
                           final box = await Hive.openBox('settings');
                           await box.put('role', _selectedRole);
-
                           if (context.mounted) {
                             if (_selectedRole == 'student') {
                               Navigator.pushReplacement(
@@ -138,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+// ─── Role Card Widget ───────────────────────────────────
 class _RoleCard extends StatelessWidget {
   final String icon;
   final String title;
@@ -164,7 +153,7 @@ class _RoleCard extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.primary.withOpacity(0.08)
+              ? AppTheme.primary.withValues(alpha: 0.08)
               : AppTheme.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
@@ -173,7 +162,7 @@ class _RoleCard extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -239,6 +228,7 @@ class StudentSetupScreen extends StatefulWidget {
 class _StudentSetupScreenState extends State<StudentSetupScreen> {
   final _nameController = TextEditingController();
   String? _selectedClass;
+  String? _selectedMedium;
   final List<String> _classes = ['8', '9', '10'];
 
   @override
@@ -262,7 +252,7 @@ class _StudentSetupScreenState extends State<StudentSetupScreen> {
               'ನಿಮ್ಮ ಬಗ್ಗೆ ಹೇಳಿ',
               style: TextStyle(color: AppTheme.textMuted),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
 
             // Name field
             TextField(
@@ -275,7 +265,8 @@ class _StudentSetupScreenState extends State<StudentSetupScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppTheme.primary, width: 2),
+                  borderSide:
+                      BorderSide(color: AppTheme.primary, width: 2),
                 ),
               ),
             ),
@@ -326,6 +317,97 @@ class _StudentSetupScreenState extends State<StudentSetupScreen> {
                 );
               }).toList(),
             ),
+            const SizedBox(height: 24),
+
+            // Medium selection
+            Text(
+              'Select Medium / ಮಾಧ್ಯಮ ಆಯ್ಕೆ ಮಾಡಿ',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () =>
+                        setState(() => _selectedMedium = 'english'),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: _selectedMedium == 'english'
+                            ? AppTheme.primary
+                            : AppTheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: _selectedMedium == 'english'
+                              ? AppTheme.primary
+                              : Colors.grey[300]!,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          const Text('📖',
+                              style: TextStyle(fontSize: 24)),
+                          const SizedBox(height: 4),
+                          Text(
+                            'English Medium',
+                            style: TextStyle(
+                              color: _selectedMedium == 'english'
+                                  ? Colors.white
+                                  : AppTheme.textDark,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () =>
+                        setState(() => _selectedMedium = 'kannada'),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: _selectedMedium == 'kannada'
+                            ? AppTheme.primary
+                            : AppTheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: _selectedMedium == 'kannada'
+                              ? AppTheme.primary
+                              : Colors.grey[300]!,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          const Text('🔤',
+                              style: TextStyle(fontSize: 24)),
+                          const SizedBox(height: 4),
+                          Text(
+                            'ಕನ್ನಡ ಮಾಧ್ಯಮ',
+                            style: TextStyle(
+                              color: _selectedMedium == 'kannada'
+                                  ? Colors.white
+                                  : AppTheme.textDark,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const Spacer(),
 
             // Continue button
@@ -333,13 +415,15 @@ class _StudentSetupScreenState extends State<StudentSetupScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: (_nameController.text.isEmpty ||
-                        _selectedClass == null)
+                        _selectedClass == null ||
+                        _selectedMedium == null)
                     ? null
                     : () async {
                         final box = await Hive.openBox('settings');
-                        await box.put('student_name', _nameController.text);
+                        await box.put(
+                            'student_name', _nameController.text);
                         await box.put('student_class', _selectedClass);
-
+                        await box.put('medium', _selectedMedium);
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,
@@ -352,7 +436,8 @@ class _StudentSetupScreenState extends State<StudentSetupScreen> {
                 style: ElevatedButton.styleFrom(
                   disabledBackgroundColor: Colors.grey[300],
                 ),
-                child: const Text('Start Learning / ಕಲಿಕೆ ಪ್ರಾರಂಭಿಸಿ'),
+                child: const Text(
+                    'Start Learning / ಕಲಿಕೆ ಪ್ರಾರಂಭಿಸಿ'),
               ),
             ),
             const SizedBox(height: 20),
@@ -375,9 +460,7 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscure = true;
   String? _error;
-
-  // Default teacher password
-  static const String _teacherPassword = 'teacher123';
+  final String _teacherPassword = 'teacher123';
 
   @override
   Widget build(BuildContext context) {
@@ -401,7 +484,6 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
               style: TextStyle(color: AppTheme.textMuted),
             ),
             const SizedBox(height: 40),
-
             TextField(
               controller: _passwordController,
               obscureText: _obscure,
@@ -409,15 +491,18 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                 labelText: 'Password / ಪಾಸ್ವರ್ಡ್',
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
-                  icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () => setState(() => _obscure = !_obscure),
+                  icon: Icon(
+                      _obscure ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () =>
+                      setState(() => _obscure = !_obscure),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppTheme.primary, width: 2),
+                  borderSide:
+                      BorderSide(color: AppTheme.primary, width: 2),
                 ),
                 errorText: _error,
               ),
@@ -425,13 +510,9 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
             const SizedBox(height: 8),
             Text(
               'Default password: teacher123',
-              style: TextStyle(
-                fontSize: 12,
-                color: AppTheme.textMuted,
-              ),
+              style: TextStyle(fontSize: 12, color: AppTheme.textMuted),
             ),
             const Spacer(),
-
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
