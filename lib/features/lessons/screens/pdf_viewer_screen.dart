@@ -7,6 +7,7 @@ import '../../../core/database/database_repository.dart';
 import '../../../core/database/lesson_model.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../practice/screens/quiz_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final Lesson lesson;
@@ -34,11 +35,16 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
   Future<void> _loadPdf() async {
     try {
-      // Load PDF from assets
-      final byteData =
-          await rootBundle.load(widget.lesson.pdfPath);
+      // Get medium from Hive
+      final box = await Hive.openBox('settings');
+      final medium = box.get('medium', defaultValue: 'english');
+
+      // Pick correct PDF path
+      final pdfPath = widget.lesson.getPdfPath(medium);
+
+      final byteData = await rootBundle.load(pdfPath);
       final tempDir = await getTemporaryDirectory();
-      final fileName = widget.lesson.pdfPath.split('/').last;
+      final fileName = pdfPath.split('/').last;
       final file = File('${tempDir.path}/$fileName');
       await file.writeAsBytes(byteData.buffer.asUint8List());
 
