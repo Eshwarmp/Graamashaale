@@ -15,7 +15,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'graamashaale_v5.db');
+    final path = join(dbPath, 'graamashaale_v6.db');
     return await openDatabase(
       path,
       version: 1,
@@ -68,6 +68,7 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         subject TEXT NOT NULL,
         question TEXT NOT NULL,
+        answer TEXT,
         is_synced INTEGER DEFAULT 0,
         created_at TEXT NOT NULL
       )

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/theme/app_theme.dart';
 import 'home_screen.dart';
+import 'teacher_home_screen.dart';
+import '../../../app/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -428,7 +430,7 @@ class _StudentSetupScreenState extends State<StudentSetupScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const HomeScreen(),
+                              builder: (_) => const MainScreen(),
                             ),
                           );
                         }
@@ -524,7 +526,7 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const HomeScreen(),
+                          builder: (_) => const TeacherHomeScreen(),
                         ),
                       );
                     }

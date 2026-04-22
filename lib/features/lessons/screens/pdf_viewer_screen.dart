@@ -126,7 +126,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Please add the PDF file to:\n${widget.lesson.pdfPath}',
+                        'Please add the PDF file to:\n${widget.lesson.pdfPathEn}',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: AppTheme.textMuted,

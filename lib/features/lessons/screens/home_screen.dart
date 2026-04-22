@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../features/progress/screens/profile_screen.dart';
+// import '../../../features/progress/screens/progress_screen.dart';
+// import '../../../features/doubt/screens/doubt_screen.dart';
 import 'lessons_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,6 +39,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return _studentName.isNotEmpty
         ? _studentName[0].toUpperCase()
         : 'S';
+  }
+
+  void _openSubject(BuildContext context, String subject,
+      String icon, Color color) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => LessonsScreen(
+          subject: subject,
+          color: color,
+          icon: icon,
+        ),
+      ),
+    );
   }
 
   @override
@@ -75,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -112,7 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color:
+                          Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text(
@@ -131,7 +149,10 @@ class _HomeScreenState extends State<HomeScreen> {
             // Core subjects
             Text(
               'Core Subjects',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: AppTheme.textDark,
                   ),
@@ -158,8 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: 'Mathematics',
                   icon: '📐',
                   color: const Color(0xFFE3F2FD),
-                  onTap: () => _openSubject(
-                      context, 'Mathematics', '📐',
+                  onTap: () => _openSubject(context,
+                      'Mathematics', '📐',
                       const Color(0xFFE3F2FD)),
                 ),
                 _SubjectCard(
@@ -167,8 +188,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: 'Science',
                   icon: '🔬',
                   color: const Color(0xFFE8F5E9),
-                  onTap: () => _openSubject(
-                      context, 'Science', '🔬',
+                  onTap: () => _openSubject(context,
+                      'Science', '🔬',
                       const Color(0xFFE8F5E9)),
                 ),
                 _SubjectCard(
@@ -176,8 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: 'Social Studies',
                   icon: '🌍',
                   color: const Color(0xFFFFF8E1),
-                  onTap: () => _openSubject(
-                      context, 'Social Studies', '🌍',
+                  onTap: () => _openSubject(context,
+                      'Social Studies', '🌍',
                       const Color(0xFFFFF8E1)),
                 ),
               ],
@@ -187,7 +208,10 @@ class _HomeScreenState extends State<HomeScreen> {
             // Language subjects
             Text(
               'Languages',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: AppTheme.textDark,
                   ),
@@ -214,8 +238,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: 'Kannada',
                   icon: '🔤',
                   color: const Color(0xFFEDE7F6),
-                  onTap: () => _openSubject(
-                      context, 'Kannada', '🔤',
+                  onTap: () => _openSubject(context,
+                      'Kannada', '🔤',
                       const Color(0xFFEDE7F6)),
                 ),
                 _SubjectCard(
@@ -223,8 +247,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: 'English',
                   icon: '📖',
                   color: const Color(0xFFFCE4EC),
-                  onTap: () => _openSubject(
-                      context, 'English', '📖',
+                  onTap: () => _openSubject(context,
+                      'English', '📖',
                       const Color(0xFFFCE4EC)),
                 ),
                 _SubjectCard(
@@ -232,28 +256,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: 'Hindi',
                   icon: '📝',
                   color: const Color(0xFFFFF3E0),
-                  onTap: () => _openSubject(
-                      context, 'Hindi', '📝',
+                  onTap: () => _openSubject(context,
+                      'Hindi', '📝',
                       const Color(0xFFFFF3E0)),
                 ),
               ],
             ),
             const SizedBox(height: 20),
           ],
-        ),
-      ),
-    );
-  }
-
-  void _openSubject(BuildContext context, String subject,
-      String icon, Color color) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => LessonsScreen(
-          subject: subject,
-          color: color,
-          icon: icon,
         ),
       ),
     );

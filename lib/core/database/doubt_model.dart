@@ -2,6 +2,7 @@ class Doubt {
   final int? id;
   final String subject;
   final String question;
+  final String? answer;
   final bool isSynced;
   final String createdAt;
 
@@ -9,6 +10,7 @@ class Doubt {
     this.id,
     required this.subject,
     required this.question,
+    this.answer,
     this.isSynced = false,
     required this.createdAt,
   });
@@ -18,6 +20,7 @@ class Doubt {
       id: map['id'],
       subject: map['subject'],
       question: map['question'],
+      answer: map['answer'],
       isSynced: map['is_synced'] == 1,
       createdAt: map['created_at'],
     );
@@ -28,6 +31,7 @@ class Doubt {
       'id': id,
       'subject': subject,
       'question': question,
+      'answer': answer,
       'is_synced': isSynced ? 1 : 0,
       'created_at': createdAt,
     };

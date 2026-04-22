@@ -162,4 +162,18 @@ class DatabaseRepository {
       whereArgs: [doubtId],
     );
   }
+
+  // Save teacher's answer to a doubt
+  Future<void> answerDoubt(int doubtId, String answer) async {
+    final db = await _dbHelper.database;
+    await db.update(
+      'doubts',
+      {
+        'answer': answer,
+        'is_synced': 1,
+      },
+      where: 'id = ?',
+      whereArgs: [doubtId],
+    );
+  }
 }

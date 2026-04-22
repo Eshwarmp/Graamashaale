@@ -279,12 +279,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: OutlinedButton.icon(
                 onPressed: () async {
                   final box = await Hive.openBox('settings');
+                  
+                  // Save student ID before clearing
+                  final studentId = box.get('student_id', defaultValue: '');
+                  
+                  // Clear everything
                   await box.clear();
+                  
+                  // Restore student ID so it persists across logins
+                  if (studentId.isNotEmpty) {
+                    await box.put('student_id', studentId);
+                  }
+                  
                   if (context.mounted) {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                          builder: (_) => const LoginScreen()),
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
                       (route) => false,
                     );
                   }

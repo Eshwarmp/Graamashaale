@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import 'login_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'teacher_home_screen.dart';
+import '../../../app/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -34,12 +37,37 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
 
     // Navigate to login after 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () async {
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
-        );
+        final box = await Hive.openBox('settings');
+        final name = box.get('student_name', defaultValue: '');
+        final role = box.get('role', defaultValue: '');
+
+        if (context.mounted) {
+          if (name.isNotEmpty || role == 'teacher') {
+            // Already logged in
+            if (role == 'teacher') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const TeacherHomeScreen()),
+              );
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const MainScreen()),
+              );
+            }
+          } else {
+            // Not logged in
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => const LoginScreen()),
+            );
+          }
+        }
       }
     });
   }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "175268827038",
+    "project_id": "graamashaale",
+    "storage_bucket": "graamashaale.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175268827038:android:c42013fc6722b63caf108f",
+        "android_client_info": {
+          "package_name": "com.example.graamashaale"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxzs0Qo6FMyvg19YuM2r447zkp24LZpmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
