@@ -1,0 +1,47 @@
+class Doubt {
+  final int? id;
+  final String subject;
+  final String question;
+  final String? answer;
+  final String? studentName;
+  final String? studentClass;
+  final bool isSynced;
+  final String createdAt;
+
+  Doubt({
+    this.id,
+    required this.subject,
+    required this.question,
+    this.answer,
+    this.studentName,
+    this.studentClass,
+    this.isSynced = false,
+    required this.createdAt,
+  });
+
+  factory Doubt.fromMap(Map<String, dynamic> map) {
+    return Doubt(
+      id: map['id'],
+      subject: map['subject'],
+      question: map['question'],
+      answer: map['answer'],
+      studentName: map['student_name'],
+      studentClass: map['student_class'],
+      isSynced: map['is_synced'] == 1,
+      createdAt: map['created_at'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'subject': subject,
+      'question': question,
+      'answer': answer,
+      'student_name': studentName,
+      'student_class': studentClass,
+      'is_synced': isSynced ? 1 : 0,
+      'created_at': createdAt,
+    };
+  }
+}
