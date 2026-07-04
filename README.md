@@ -9,6 +9,8 @@
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Release](https://img.shields.io/badge/Release-v1.0.0-blue?style=for-the-badge)](https://github.com/Eshwarmp/Graamashaale/releases/tag/v1.0.0)
 
+<br/>
+
 [![Download APK](https://img.shields.io/badge/⬇️%20Download%20APK-v1.0.0%20•%2026MB-brightgreen?style=for-the-badge)](https://github.com/Eshwarmp/Graamashaale/releases/download/v1.0.0/app-arm64-v8a-release.apk)
 
 </div>
@@ -40,34 +42,36 @@ Rural students in Karnataka lack access to quality educational resources, qualif
 ## 📸 Screenshots
 
 ### Student Side
+
 | Login | Student Setup | Home |
-|---|---|---|
-| ![Login](screenshots/01_login.jpeg) | ![Student Setup](screenshots/02_student_setup.jpeg) | ![Home](screenshots/03_home.jpeg) |
+|:---:|:---:|:---:|
+| <img src="screenshots/01_login.jpeg" width="200"/> | <img src="screenshots/02_student_setup.jpeg" width="200"/> | <img src="screenshots/03_home.jpeg" width="200"/> |
 
 | PDF Download | AI Quiz Generation | Quiz Result |
-|---|---|---|
-| ![PDF Download](screenshots/04_pdf_download.jpeg) | ![AI Generating](screenshots/05_ai_generating.jpeg) | ![Quiz Result](screenshots/06_quiz_result.jpeg) |
+|:---:|:---:|:---:|
+| <img src="screenshots/04_pdf_download.jpeg" width="200"/> | <img src="screenshots/05_ai_generating.jpeg" width="200"/> | <img src="screenshots/06_quiz_result.jpeg" width="200"/> |
 
 | Doubt Corner | Profile | Progress |
-|---|---|---|
-| ![Doubt Corner](screenshots/07_doubt_corner.jpeg) | ![Profile](screenshots/08_profile.jpeg) | ![Progress](screenshots/09_progress.jpeg) |
+|:---:|:---:|:---:|
+| <img src="screenshots/07_doubt_corner.jpeg" width="200"/> | <img src="screenshots/08_profile.jpeg" width="200"/> | <img src="screenshots/09_progress.jpeg" width="200"/> |
 
 | Settings | Announcements |
-|---|---|
-| ![Settings](screenshots/10_settings.jpeg) | ![Announcements](screenshots/11_announcements.jpeg) |
+|:---:|:---:|
+| <img src="screenshots/10_settings.jpeg" width="200"/> | <img src="screenshots/11_announcements.jpeg" width="200"/> |
 
 ### Teacher Side
+
 | Dashboard | Subject Detail | Question Breakdown |
-|---|---|---|
-| ![Teacher Dashboard](screenshots/12_teacher_dashboard.jpeg) | ![Subject Detail](screenshots/16_subject_detail.jpeg) | ![Question Breakdown](screenshots/17_question_breakdown.jpeg) |
+|:---:|:---:|:---:|
+| <img src="screenshots/12_teacher_dashboard.jpeg" width="200"/> | <img src="screenshots/16_subject_detail.jpeg" width="200"/> | <img src="screenshots/17_question_breakdown.jpeg" width="200"/> |
 
 | Students List | Pending Doubts | Answered Doubts |
-|---|---|---|
-| ![Students](screenshots/15_teacher_students.jpeg) | ![Pending Doubts](screenshots/13_teacher_doubts_pending.jpeg) | ![Answered Doubts](screenshots/14_teacher_doubts_answered.jpeg) |
+|:---:|:---:|:---:|
+| <img src="screenshots/15_teacher_students.jpeg" width="200"/> | <img src="screenshots/13_teacher_doubts_pending.jpeg" width="200"/> | <img src="screenshots/14_teacher_doubts_answered.jpeg" width="200"/> |
 
 | New Announcement | Teacher Profile |
-|---|---|
-| ![Announcement](screenshots/18_teacher_announcement.jpeg) | ![Teacher Profile](screenshots/19_teacher_profile.jpeg) |
+|:---:|:---:|
+| <img src="screenshots/18_teacher_announcement.jpeg" width="200"/> | <img src="screenshots/19_teacher_profile.jpeg" width="200"/> |
 
 ---
 
@@ -117,7 +121,7 @@ lib/
 │   ├── sync/
 │   │   ├── ai_service.dart         # Groq AI integration
 │   │   ├── sync_service.dart       # Firebase sync & connectivity
-│   │   └── secrets.example.dart   # API key template
+│   │   └── secrets.example.dart    # API key template
 │   └── theme/
 │       └── app_theme.dart
 └── features/
@@ -202,8 +206,6 @@ flutter build apk --release --split-per-abi
 ---
 
 ## 🗄 Database Schema
-
-The app uses SQLite with these tables:
 
 | Table | Purpose |
 |---|---|
