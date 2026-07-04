@@ -42,32 +42,32 @@ Rural students in Karnataka lack access to quality educational resources, qualif
 ### Student Side
 | Login | Student Setup | Home |
 |---|---|---|
-| ![Login](screenshots/01_login.png) | ![Student Setup](screenshots/02_student_setup.png) | ![Home](screenshots/03_home.png) |
+| ![Login](screenshots/01_login.jpeg) | ![Student Setup](screenshots/02_student_setup.jpeg) | ![Home](screenshots/03_home.jpeg) |
 
 | PDF Download | AI Quiz Generation | Quiz Result |
 |---|---|---|
-| ![PDF Download](screenshots/04_pdf_download.png) | ![AI Generating](screenshots/05_ai_generating.png) | ![Quiz Result](screenshots/06_quiz_result.png) |
+| ![PDF Download](screenshots/04_pdf_download.jpeg) | ![AI Generating](screenshots/05_ai_generating.jpeg) | ![Quiz Result](screenshots/06_quiz_result.jpeg) |
 
 | Doubt Corner | Profile | Progress |
 |---|---|---|
-| ![Doubt Corner](screenshots/07_doubt_corner.png) | ![Profile](screenshots/08_profile.png) | ![Progress](screenshots/09_progress.png) |
+| ![Doubt Corner](screenshots/07_doubt_corner.jpeg) | ![Profile](screenshots/08_profile.jpeg) | ![Progress](screenshots/09_progress.jpeg) |
 
 | Settings | Announcements |
 |---|---|
-| ![Settings](screenshots/10_settings.png) | ![Announcements](screenshots/11_announcements.png) |
+| ![Settings](screenshots/10_settings.jpeg) | ![Announcements](screenshots/11_announcements.jpeg) |
 
 ### Teacher Side
 | Dashboard | Subject Detail | Question Breakdown |
 |---|---|---|
-| ![Teacher Dashboard](screenshots/12_teacher_dashboard.png) | ![Subject Detail](screenshots/16_subject_detail.png) | ![Question Breakdown](screenshots/17_question_breakdown.png) |
+| ![Teacher Dashboard](screenshots/12_teacher_dashboard.jpeg) | ![Subject Detail](screenshots/16_subject_detail.jpeg) | ![Question Breakdown](screenshots/17_question_breakdown.jpeg) |
 
 | Students List | Pending Doubts | Answered Doubts |
 |---|---|---|
-| ![Students](screenshots/15_teacher_students.png) | ![Pending Doubts](screenshots/13_teacher_doubts_pending.png) | ![Answered Doubts](screenshots/14_teacher_doubts_answered.png) |
+| ![Students](screenshots/15_teacher_students.jpeg) | ![Pending Doubts](screenshots/13_teacher_doubts_pending.jpeg) | ![Answered Doubts](screenshots/14_teacher_doubts_answered.jpeg) |
 
 | New Announcement | Teacher Profile |
 |---|---|
-| ![Announcement](screenshots/18_teacher_announcement.png) | ![Teacher Profile](screenshots/19_teacher_profile.png) |
+| ![Announcement](screenshots/18_teacher_announcement.jpeg) | ![Teacher Profile](screenshots/19_teacher_profile.jpeg) |
 
 ---
 
