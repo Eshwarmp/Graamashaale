@@ -1,7 +1,7 @@
 <div align="center">
 
 # 📚 GraamaShaale
-### ಗ್ರಾಮಶಾಲೆ — Bringing Quality Education to Rural Karnataka
+### ಗ್ರಾಮಶಾಲೆ — Bridging the Digital Gap in Rural Karnataka Education
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter)](https://flutter.dev)
 [![Firebase](https://img.shields.io/badge/Firebase-Enabled-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com)
@@ -17,9 +17,21 @@
 
 ---
 
-## 🎯 Problem Statement
+## 🎯 About
 
-Rural students in Karnataka lack access to quality educational resources, qualified teachers, and consistent internet connectivity. GraamaShaale bridges this gap with an **offline-first** mobile learning platform built for Class 8–10 students following the KSEEB syllabus.
+GraamaShaale started as an academic project and grew into a fully functional app to bridge the digital gap in rural Karnataka education.
+
+**What was lacking:**
+- No offline-ready digital textbooks for KSEEB Class 8–10 students
+- No easy way for teachers to track student progress digitally
+- No AI-powered practice tools accessible without reliable internet
+
+**What we built:**
+- Offline PDF textbooks for Class 8, 9, 10 across all subjects
+- AI-generated quizzes per lesson using Groq API
+- Teacher dashboard with subject-wise student progress and question-level analysis
+- Bilingual interface — English + ಕನ್ನಡ
+- Works fully offline after first load
 
 ---
 
