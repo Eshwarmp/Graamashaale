@@ -1,237 +1,248 @@
-# ಗ್ರಾಮಶಾಲೆ — GraamaShaale 📚
+<div align="center">
 
+# 📚 GraamaShaale
+### ಗ್ರಾಮಶಾಲೆ — Bringing Quality Education to Rural Karnataka
 
-> **Learn from anywhere, anytime.**
-> ಕಲಿಕೆ, ಎಲ್ಲಿಂದಲೂ. ಯಾವಾಗಲೂ.
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter)](https://flutter.dev)
+[![Firebase](https://img.shields.io/badge/Firebase-Enabled-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com)
+[![Groq AI](https://img.shields.io/badge/Groq-AI%20Powered-F55036?style=for-the-badge)](https://console.groq.com)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Release](https://img.shields.io/badge/Release-v1.0.0-blue?style=for-the-badge)](https://github.com/Eshwarmp/Graamashaale/releases/tag/v1.0.0)
 
-An offline-first hybrid mobile educational application for rural high school students in Karnataka, India — built with Flutter.
+[![Download APK](https://img.shields.io/badge/⬇️%20Download%20APK-v1.0.0%20•%2026MB-brightgreen?style=for-the-badge)](https://github.com/Eshwarmp/Graamashaale/releases/download/v1.0.0/app-arm64-v8a-release.apk)
+
+</div>
 
 ---
 
-## 📱 About
+## 🎯 Problem Statement
 
-GraamaShaale (meaning "Village School" in Kannada) is designed to bridge the digital education divide in rural Karnataka. Students in Classes 8, 9, and 10 can access complete KSEEB-aligned textbooks, practice bilingual quizzes, track their progress, and ask doubts — **all without an internet connection**.
+Rural students in Karnataka lack access to quality educational resources, qualified teachers, and consistent internet connectivity. GraamaShaale bridges this gap with an **offline-first** mobile learning platform built for Class 8–10 students following the KSEEB syllabus.
 
 ---
 
 ## ✨ Features
 
-### 👨‍🎓 For Students
-- 📖 **Offline Textbooks** — Download KSEEB textbooks once, read forever offline
-- 🔤 **Bilingual Support** — Content in both Kannada and English medium
-- 📝 **MCQ Quizzes** — Bilingual practice questions with instant feedback
-- 📊 **Progress Tracking** — Track completed textbooks and quiz scores
-- ❓ **Doubt Corner** — Submit doubts offline, synced to teacher when online
-- 👤 **Student Profile** — Unique Student ID, class, medium details
-
-### 👩‍🏫 For Teachers
-- 📋 **Teacher Dashboard** — View student activity and statistics
-- 💬 **Answer Doubts** — Reply to student doubts filtered by subject
-- 🏫 **School Registration** — Register with name, school, and subject
-- 🔔 **Pending Alerts** — Badge count for unanswered doubts
-
-### 🔌 Offline-First Architecture
-- Works **100% offline** after initial content download
-- Auto-syncs doubts to Firebase when internet is available
-- Red banner indicator shows offline/online status
-- Pull-to-refresh on all screens
+| Feature | Description |
+|---|---|
+| 📖 **Offline Textbooks** | KSEEB PDF books for Class 8, 9, 10 — Math, Science, Social, Kannada, Hindi, English |
+| 🤖 **AI Quizzes** | Auto-generated MCQs using Groq AI (LLaMA 3.3) per lesson, fresh every session |
+| 👩‍🏫 **Teacher Dashboard** | Subject-wise student progress, quiz results, doubt management |
+| 📊 **Question Breakdown** | See exactly which questions each student got right/wrong with correct answers shown |
+| 🌐 **Bilingual UI** | Full English + ಕನ್ನಡ interface throughout the app |
+| 🔔 **Announcements** | Teachers post announcements via Firebase, students see them in real time |
+| 👥 **Multi-Student** | Multiple students can use the same device with completely separate progress tracking |
+| 🌙 **Dark Mode** | Full dark/light theme support |
+| 📶 **Offline First** | Works without internet after first load — perfect for rural areas |
 
 ---
 
 ## 📸 Screenshots
 
-<table align="center">
-<tr>
-<td align="center">
-<b>Login Screen</b><br><br>
-<img src="screenshots/login.jpeg" width="300"/>
-</td>
+### Student Side
+| Login | Student Setup | Home |
+|---|---|---|
+| ![Login](screenshots/01_login.png) | ![Student Setup](screenshots/02_student_setup.png) | ![Home](screenshots/03_home.png) |
 
-<td align="center">
-<b>Home Screen</b><br><br>
-<img src="screenshots/home.jpeg" width="300"/>
-</td>
-</tr>
+| PDF Download | AI Quiz Generation | Quiz Result |
+|---|---|---|
+| ![PDF Download](screenshots/04_pdf_download.png) | ![AI Generating](screenshots/05_ai_generating.png) | ![Quiz Result](screenshots/06_quiz_result.png) |
 
-<tr>
-<td align="center">
-<b>Quiz Screen</b><br><br>
-<img src="screenshots/quiz.jpeg" width="300"/>
-</td>
+| Doubt Corner | Profile | Progress |
+|---|---|---|
+| ![Doubt Corner](screenshots/07_doubt_corner.png) | ![Profile](screenshots/08_profile.png) | ![Progress](screenshots/09_progress.png) |
 
-<td align="center">
-<b>Teacher Dashboard</b><br><br>
-<img src="screenshots/Teacher.jpeg" width="300"/>
-</td>
-</tr>
-
-<tr>
-<td align="center">
-<b>Progress Screen</b><br><br>
-<img src="screenshots/progress.jpeg" width="300"/>
-</td>
-
-<td align="center">
-<b>PDF Viewer</b><br><br>
-<img src="screenshots/PDF.jpeg" width="300"/>
-</td>
-</tr>
-</table>
-
-
-## 🏗️ Tech Stack
-
-| Category | Technology |
+| Settings | Announcements |
 |---|---|
-| Framework | Flutter (Dart) |
-| Local Database | SQLite via `sqflite` |
-| Key-Value Store | `hive_flutter` |
-| State Management | `flutter_riverpod` |
-| Cloud Backend | Firebase Firestore |
-| Content Delivery | GitHub Releases (KSEEB PDFs) |
-| PDF Viewer | `flutter_pdfview` |
-| File Download | `dio` |
-| Connectivity | `connectivity_plus` |
-| UI | Material Design 3 |
+| ![Settings](screenshots/10_settings.png) | ![Announcements](screenshots/11_announcements.png) |
+
+### Teacher Side
+| Dashboard | Subject Detail | Question Breakdown |
+|---|---|---|
+| ![Teacher Dashboard](screenshots/12_teacher_dashboard.png) | ![Subject Detail](screenshots/16_subject_detail.png) | ![Question Breakdown](screenshots/17_question_breakdown.png) |
+
+| Students List | Pending Doubts | Answered Doubts |
+|---|---|---|
+| ![Students](screenshots/15_teacher_students.png) | ![Pending Doubts](screenshots/13_teacher_doubts_pending.png) | ![Answered Doubts](screenshots/14_teacher_doubts_answered.png) |
+
+| New Announcement | Teacher Profile |
+|---|---|
+| ![Announcement](screenshots/18_teacher_announcement.png) | ![Teacher Profile](screenshots/19_teacher_profile.png) |
 
 ---
 
-## 📂 Project Structure
-```text
+## 📱 Download & Install
+
+> Works on all modern Android phones (Android 6.0+)
+
+[![Download APK](https://img.shields.io/badge/⬇️%20Download%20APK-26MB-brightgreen?style=for-the-badge)](https://github.com/Eshwarmp/Graamashaale/releases/download/v1.0.0/app-arm64-v8a-release.apk)
+
+1. Click the button above to download the APK
+2. On your Android phone → Settings → Allow installation from unknown sources
+3. Open the downloaded APK and install
+4. Launch GraamaShaale 🎉
+
+---
+
+## 🛠 Tech Stack
+
+| Technology | Usage |
+|---|---|
+| **Flutter (Dart)** | Cross-platform mobile framework |
+| **Firebase Firestore** | Cloud sync for students, announcements |
+| **SQLite (sqflite)** | Local database for lessons, progress, doubts, quiz answers |
+| **Hive** | Lightweight key-value storage for settings & student history |
+| **Groq AI API** | LLaMA 3.3-based quiz question generation |
+| **Riverpod** | State management for dark/light theme |
+| **flutter_pdfview** | In-app PDF textbook viewer |
+| **dio** | PDF download manager with progress tracking |
+
+---
+
+## 🏗 Project Structure
+
+```
 lib/
 ├── app/
-│   ├── app.dart
-│   └── main_screen.dart
+│   ├── app.dart                    # App entry with theme provider
+│   └── main_screen.dart            # Bottom navigation wrapper
 ├── core/
 │   ├── database/
-│   │   ├── database_helper.dart
-│   │   ├── database_repository.dart
+│   │   ├── database_helper.dart    # SQLite setup & all tables
+│   │   ├── database_repository.dart# All DB operations
 │   │   ├── lesson_model.dart
 │   │   ├── question_model.dart
 │   │   ├── progress_model.dart
 │   │   └── doubt_model.dart
 │   ├── sync/
-│   │   ├── sync_service.dart
-│   │   └── download_service.dart
+│   │   ├── ai_service.dart         # Groq AI integration
+│   │   ├── sync_service.dart       # Firebase sync & connectivity
+│   │   └── secrets.example.dart   # API key template
 │   └── theme/
 │       └── app_theme.dart
 └── features/
-├── lessons/
-│   └── screens/
-│       ├── splash_screen.dart
-│       ├── login_screen.dart
-│       ├── home_screen.dart
-│       ├── lessons_screen.dart
-│       ├── pdf_viewer_screen.dart
-│       ├── teacher_home_screen.dart
-│       └── teacher_register_screen.dart
-├── practice/
-│   └── screens/
-│       ├── quiz_screen.dart
-│       └── score_screen.dart
-├── progress/
-│   └── screens/
-│       ├── progress_screen.dart
-│       └── profile_screen.dart
-└── doubt/
-└── screens/
-└── doubt_screen.dart
+    ├── lessons/screens/
+    │   ├── splash_screen.dart
+    │   ├── onboarding_screen.dart
+    │   ├── login_screen.dart       # Role selection + student setup
+    │   ├── home_screen.dart
+    │   ├── lessons_screen.dart
+    │   ├── pdf_viewer_screen.dart
+    │   ├── announcements_screen.dart
+    │   ├── teacher_home_screen.dart
+    │   ├── teacher_register_screen.dart
+    │   └── teacher_profile_screen.dart
+    ├── practice/screens/
+    │   ├── quiz_screen.dart        # AI quiz with per-question tracking
+    │   └── score_screen.dart
+    ├── progress/screens/
+    │   ├── progress_screen.dart
+    │   ├── profile_screen.dart
+    │   └── settings_screen.dart
+    └── doubt/screens/
+        └── doubt_screen.dart
 ```
+
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (For Developers)
 
 ### Prerequisites
-- Flutter SDK >= 3.0.0
-- Android Studio or VS Code
-- Android device or emulator (Android 5.0+)
-- Firebase project with Firestore enabled
+- Flutter SDK 3.x
+- Android Studio / VS Code
+- Firebase account
+- Groq API key (free at [console.groq.com](https://console.groq.com))
 
-### Installation
+### Setup
 
-**1. Clone the repository**
 ```bash
+# 1. Clone the repo
 git clone https://github.com/Eshwarmp/Graamashaale.git
 cd Graamashaale
-```
 
-**2. Install dependencies**
-```bash
+# 2. Install dependencies
 flutter pub get
-```
 
-**3. Add Firebase configuration**
-- Download `google-services.json` from your Firebase console
-- Place it in `android/app/`
+# 3. Set up Groq API key
+cp lib/core/sync/secrets.example.dart lib/core/sync/secrets.dart
+# Open secrets.dart and add your Groq API key
 
-**4. Run the app**
-```bash
+# 4. Add Firebase config
+# Download google-services.json from Firebase Console
+# Place it at android/app/google-services.json
+
+# 5. Run the app
 flutter run
 ```
 
 ### Build Release APK
 ```bash
 flutter build apk --release --split-per-abi
-```
-The optimized APK for modern phones will be at:
-build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-
----
-
-## 📚 KSEEB Content
-
-Textbooks are hosted on GitHub Releases and downloaded on-demand.
-All 36 textbooks are available for:
-
-| Class | Core Subjects | Language Subjects |
-|---|---|---|
-| Class 8 | Mathematics, Science, Social Studies | English, Kannada, Hindi |
-| Class 9 | Mathematics, Science, Social Studies | English, Kannada, Hindi |
-| Class 10 | Mathematics, Science, Social Studies | English, Kannada, Hindi |
-
-- **English Medium** — English version of core subject textbooks
-- **Kannada Medium** — Kannada version of core subject textbooks
-- **Language subjects** — Same for both mediums
-
----
-
-## 🗄️ Database Schema
-
-```sql
-lessons     — Lesson metadata and PDF paths
-questions   — Bilingual MCQ questions
-progress    — Student quiz scores and completion
-doubts      — Student doubts with teacher answers
+# Your APK: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 ```
 
 ---
 
-## 🔄 Offline Sync Flow
-```text
-Student submits doubt
-↓
-Saved to SQLite locally (works offline ✅)
-↓
-Internet available?
-YES → Push to Firebase Firestore
-NO  → Wait and retry automatically
-↓
-Teacher sees doubt in dashboard
-↓
-Teacher sends answer
-↓
-Student sees answer on pull-to-refresh
-```
+## 🔑 API Keys Setup
+
+**Groq AI (for quiz generation):**
+1. Get a free key at [console.groq.com](https://console.groq.com)
+2. Copy the example file:
+   ```bash
+   cp lib/core/sync/secrets.example.dart lib/core/sync/secrets.dart
+   ```
+3. Paste your key inside `secrets.dart`
+
+**Firebase (for cloud sync):**
+1. Create a project at [Firebase Console](https://console.firebase.google.com)
+2. Add Android app with package `com.example.graamashaale`
+3. Download `google-services.json` → place in `android/app/`
+4. Enable Firestore Database in Firebase console
+
+---
+
+## 🗄 Database Schema
+
+The app uses SQLite with these tables:
+
+| Table | Purpose |
+|---|---|
+| `lessons` | All KSEEB textbooks metadata and PDF URLs |
+| `questions` | AI-generated MCQs per lesson |
+| `progress` | Per-student quiz attempt scores |
+| `progress_answers` | Per-question answers for detailed breakdown |
+| `completions` | Per-student textbook completion tracking |
+| `doubts` | Student doubts with teacher replies |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+- Report bugs via [Issues](https://github.com/Eshwarmp/Graamashaale/issues)
+- Submit pull requests
+- Suggest new features for rural education
+
+---
+
+## 👨‍💻 Developer
+
+**Eshwar MP**
+- 🎓 Student at NMIT, Bangalore
+- 💡 Built as a social-impact project for rural education in Karnataka
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/eshwar-m-p-2487102a5/)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/Eshwarmp)
+
+---
 
 ## 📄 License
 
-This project was developed as a Mini-Project for academic purposes under VTU.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgements
-
-- [Karnataka Textbook Society (KTBS)](https://ktbs.kar.nic.in) for free KSEEB textbooks
-- [Flutter](https://flutter.dev) for the cross-platform framework
-- [Firebase](https://firebase.google.com) for cloud backend
-- [VTU](https://vtu.ac.in) and [NMIT](https://nmit.ac.in) for academic support
+<div align="center">
+  <p>Made with ❤️ for rural Karnataka students</p>
+  <p>⭐ Star this repo if you found it helpful!</p>
+</div>
