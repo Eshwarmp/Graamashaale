@@ -227,14 +227,15 @@ Contributions are welcome! Feel free to:
 
 ---
 
-## 👨‍💻 Developer
+## 👨‍💻 Developers
 
-**Eshwar MP**
-- 🎓 Student at NMIT, Bangalore
-- 💡 Built as a social-impact project for rural education in Karnataka
+Built with ❤️ by two friends from NMIT, Bangalore — started as an academic project and grew into a fully-featured social impact app for rural Karnataka students.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/eshwar-m-p-2487102a5/)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/Eshwarmp)
+| | Eshwar MP | Darshan A M |
+|---|---|---|
+| 🎓 | NMIT, Bangalore | NMIT, Bangalore |
+| 💼 | [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/eshwar-m-p-2487102a5/) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/darshan-a-m-a536192a4) |
+| 💻 | [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/Eshwarmp) | [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/Darshan262005) |
 
 ---
 
